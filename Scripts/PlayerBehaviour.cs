@@ -9,7 +9,7 @@ public class PlayerBehaviour : MonoBehaviour
     private int health = 100;
     public int coins = 0;
     [SerializeField]
-    private List<GameObject> items = new();
+    public List<string> items = new();
     private bool interactable = false;
     private GameObject interactableObject;
     [SerializeField]
@@ -36,6 +36,11 @@ public class PlayerBehaviour : MonoBehaviour
                 if (interactableObject.GetComponent<CoinBehaviour>() != null)
                 {
                     interactableObject.GetComponent<CoinBehaviour>().AddCoin(this);
+                    Interacted();
+                }
+                else if (interactableObject.GetComponent<ItemBehaviour>() != null)
+                {
+                    interactableObject.GetComponent<ItemBehaviour>().AddtoInventory(this);
                     Interacted();
                 }
             }
