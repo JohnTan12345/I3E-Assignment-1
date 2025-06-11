@@ -18,6 +18,8 @@ public class PlayerBehaviour : MonoBehaviour
     GameObject coinUI;
     [SerializeField]
     GameObject coinUIText;
+        [SerializeField]
+    GameObject InteractUI;
     // Variables
     private int maxhealth = 100;
     private int health = 100;
@@ -31,9 +33,9 @@ public class PlayerBehaviour : MonoBehaviour
         {
             if (value != health)
             {
+                health = value;
                 UpdateHealthUI();
             }
-            health = value;
         }
     }
     private int coins = 0;
@@ -72,11 +74,13 @@ public class PlayerBehaviour : MonoBehaviour
         {
             interactable = true;
             interactableObject = hit.collider.gameObject;
+            InteractUI.SetActive(true);
         }
         else
         {
             interactable = false;
             interactableObject = null;
+            InteractUI.SetActive(false);
         }
     }
 
@@ -102,12 +106,10 @@ public class PlayerBehaviour : MonoBehaviour
                 if (interactableObject.GetComponent<CoinBehaviour>() != null)
                 {
                     interactableObject.GetComponent<CoinBehaviour>().AddCoin(this);
-                    Interacted();
                 }
                 else if (interactableObject.GetComponent<ItemBehaviour>() != null)
                 {
                     interactableObject.GetComponent<ItemBehaviour>().AddtoInventory(this);
-                    Interacted();
                 }
             }
         }
@@ -120,13 +122,6 @@ public class PlayerBehaviour : MonoBehaviour
             Debug.Log(other.gameObject.name);
             other.gameObject.GetComponent<ModifyHealthBehaviour>().ModifyHealth(this);
         }
-    }
-
-    // After Interaction
-    private void Interacted()
-    {
-        interactable = false;
-        interactableObject = null;
     }
 
     // GUI Functions

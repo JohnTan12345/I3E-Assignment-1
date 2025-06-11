@@ -477,9 +477,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GreenHPBar: {fileID: 1378597867}
   HPText: {fileID: 135008219}
-  health: 100
+  coinUI: {fileID: 2140939011}
+  coinUIText: {fileID: 1429190570}
+  InteractUI: {fileID: 1174525502}
   canTakeDamage: 1
-  coins: 0
   items: []
   isDead: 0
   raycastSpawner: {fileID: 159467767}
@@ -2738,7 +2739,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -239}
+  m_AnchoredPosition: {x: 0, y: -239.00003}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1174525504
@@ -3040,16 +3041,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1429190570}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 6.1702905, y: 7.404349, z: 6.1702905}
+  m_LocalScale: {x: 25.690248, y: 11.944426, z: 9.953688}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2140939012}
+  m_Father: {fileID: 1577220262}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 273, y: 0}
+  m_AnchoredPosition: {x: 3788.821, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1429190572
@@ -3336,6 +3337,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1580814796}
+  - {fileID: 1429190571}
   m_Father: {fileID: 2140939012}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3893,7 +3895,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1577220262}
-  - {fileID: 1429190571}
   m_Father: {fileID: 457322657}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
