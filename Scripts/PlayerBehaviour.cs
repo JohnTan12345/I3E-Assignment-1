@@ -11,12 +11,15 @@ public class PlayerBehaviour : MonoBehaviour
 {
     // UI
     [SerializeField]
-    private GameObject GreenHPBar;
+    GameObject GreenHPBar;
     [SerializeField]
-    private GameObject HPText;
+    GameObject HPText;
+    [SerializeField]
+    GameObject coinUI;
+    [SerializeField]
+    GameObject coinUIText;
     // Variables
     private int maxhealth = 100;
-    [SerializeField]
     private int health = 100;
     public int Health // Update Health GUI the very moment it changes
     {
@@ -28,14 +31,25 @@ public class PlayerBehaviour : MonoBehaviour
         {
             if (value != health)
             {
-                health = value;
                 UpdateHealthUI();
             }
-
+            health = value;
+        }
+    }
+    private int coins = 0;
+    public int Coins
+    {
+        get
+        {
+            return coins;
+        }
+        set
+        {
+            coins = value;
+            UpdateCoinUI();
         }
     }
     public bool canTakeDamage = true;
-    public int coins = 0;
     public List<string> items = new();
     public bool isDead = false;
 
@@ -47,6 +61,7 @@ public class PlayerBehaviour : MonoBehaviour
     void Start()
     {
         UpdateHealthUI();
+        coinUI.SetActive(false);
     }
 
     void FixedUpdate()
@@ -107,15 +122,28 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
+    // After Interaction
     private void Interacted()
     {
         interactable = false;
         interactableObject = null;
     }
 
+    // GUI Functions
     private void UpdateHealthUI()
     {
         GreenHPBar.transform.localScale = new Vector3((float)health / maxhealth, 1f, 1f);
         HPText.GetComponent<TextMeshProUGUI>().text = string.Format("{0}/{1}", health, maxhealth);
+    }
+    private void UpdateCoinUI()
+    {
+        coinUIText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} / {1} Collected", coins, 13);
+        StartCoroutine(CoinUIShow());
+    }
+    IEnumerator CoinUIShow()
+    {
+        coinUI.SetActive(true);
+        yield return new WaitForSeconds(2.5f);
+        coinUI.SetActive(false);
     }
 }

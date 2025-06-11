@@ -6,7 +6,7 @@ public class CoinBehaviour : MonoBehaviour
     // Variables
     public void AddCoin(PlayerBehaviour player)
     {
-        player.coins++;
+        player.Coins++;
         Destroy(gameObject);
     }
 }
