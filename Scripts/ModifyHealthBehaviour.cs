@@ -12,15 +12,15 @@ public class ModifyHealthBehaviour : MonoBehaviour
         {
             if (damage)
             {
-                player.health -= amount;
+                player.Health -= amount;
             }
             else
             {
-                player.health += amount;
+                player.Health += amount;
             }
             player.canTakeDamage = false;
             StartCoroutine(CanTakeDamageTimer(player));
-            if (player.health <= 0)
+            if (player.Health <= 0)
             {
                 player.isDead = true;
             }

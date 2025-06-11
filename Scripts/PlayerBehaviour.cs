@@ -2,12 +2,38 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+using StarterAssets;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerBehaviour : MonoBehaviour
 {
+    // UI
+    [SerializeField]
+    private GameObject GreenHPBar;
+    [SerializeField]
+    private GameObject HPText;
     // Variables
-    public int health = 100;
+    private int maxhealth = 100;
+    [SerializeField]
+    private int health = 100;
+    public int Health // Update Health GUI the very moment it changes
+    {
+        get
+        {
+            return health;
+        }
+        set
+        {
+            if (value != health)
+            {
+                health = value;
+                UpdateHealthUI();
+            }
+
+        }
+    }
     public bool canTakeDamage = true;
     public int coins = 0;
     public List<string> items = new();
@@ -18,6 +44,10 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     private GameObject raycastSpawner;
 
+    void Start()
+    {
+        UpdateHealthUI();
+    }
 
     void FixedUpdate()
     {
@@ -42,6 +72,9 @@ public class PlayerBehaviour : MonoBehaviour
         if (isDead)
         {
             characterController.enabled = false;
+            StarterAssetsInputs starterAssetsInputs = GetComponent<StarterAssetsInputs>();
+            starterAssetsInputs.cursorLocked = false;
+            starterAssetsInputs.cursorInputForLook = false;
         }
     }
 
@@ -78,5 +111,11 @@ public class PlayerBehaviour : MonoBehaviour
     {
         interactable = false;
         interactableObject = null;
+    }
+
+    private void UpdateHealthUI()
+    {
+        GreenHPBar.transform.localScale = new Vector3((float)health / maxhealth, 1f, 1f);
+        HPText.GetComponent<TextMeshProUGUI>().text = string.Format("{0}/{1}", health, maxhealth);
     }
 }
