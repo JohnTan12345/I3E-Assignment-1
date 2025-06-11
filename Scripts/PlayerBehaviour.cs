@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
@@ -5,15 +7,17 @@ using UnityEngine;
 public class PlayerBehaviour : MonoBehaviour
 {
     // Variables
-    [SerializeField]
-    private int health = 100;
+    public int health = 100;
+    public bool canTakeDamage = true;
     public int coins = 0;
-    [SerializeField]
     public List<string> items = new();
+    public bool isDead = false;
+
     private bool interactable = false;
     private GameObject interactableObject;
     [SerializeField]
     private GameObject raycastSpawner;
+
 
     void FixedUpdate()
     {
@@ -24,12 +28,26 @@ public class PlayerBehaviour : MonoBehaviour
             interactable = true;
             interactableObject = hit.collider.gameObject;
         }
+        else
+        {
+            interactable = false;
+            interactableObject = null;
+        }
+    }
 
+    void Update()
+    {
+        CharacterController characterController = GetComponent<CharacterController>();
+
+        if (isDead)
+        {
+            characterController.enabled = false;
+        }
     }
 
     void OnInteract()
     {
-        if (interactable)
+        if (interactable && interactableObject != null)
         {
             if (interactableObject.CompareTag("Collectible"))
             {
@@ -47,10 +65,18 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
-    void Interacted()
+    void OnCollisionStay(Collision other)
+    {
+        if (other.gameObject.CompareTag("HealthModifier"))
+        {
+            Debug.Log(other.gameObject.name);
+            other.gameObject.GetComponent<ModifyHealthBehaviour>().ModifyHealth(this);
+        }
+    }
+
+    private void Interacted()
     {
         interactable = false;
         interactableObject = null;
     }
-
 }
