@@ -18,8 +18,10 @@ public class PlayerBehaviour : MonoBehaviour
     GameObject coinUI;
     [SerializeField]
     GameObject coinUIText;
-        [SerializeField]
+    [SerializeField]
     GameObject InteractUI;
+    [SerializeField]
+    GameObject KeycardUI;
     // Variables
     private int maxhealth = 100;
     private int health = 100;
@@ -52,7 +54,19 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
     public bool canTakeDamage = true;
-    public List<string> items = new();
+    private bool hasKeycard = false;
+    public bool HasKeycard
+    {
+        get
+        {
+            return hasKeycard;
+        }
+        set
+        {
+            hasKeycard = value;
+            UpdateKeycardUI();
+        }
+    }
     public bool isDead = false;
 
     private bool interactable = false;
@@ -64,13 +78,14 @@ public class PlayerBehaviour : MonoBehaviour
     {
         UpdateHealthUI();
         coinUI.SetActive(false);
+        KeycardUI.SetActive(false);
     }
 
     void FixedUpdate()
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(raycastSpawner.transform.position, raycastSpawner.transform.forward, out hit, 1.5f) && (hit.collider.CompareTag("Collectible"))) // May Add Interactible objects later
+        if (Physics.Raycast(raycastSpawner.transform.position, raycastSpawner.transform.forward, out hit, 1.5f) && hit.collider.CompareTag("Interactable"))
         {
             interactable = true;
             interactableObject = hit.collider.gameObject;
@@ -101,7 +116,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (interactable && interactableObject != null)
         {
-            if (interactableObject.CompareTag("Collectible"))
+            if (interactableObject.CompareTag("Interactable"))
             {
                 if (interactableObject.GetComponent<CoinBehaviour>() != null)
                 {
@@ -110,6 +125,10 @@ public class PlayerBehaviour : MonoBehaviour
                 else if (interactableObject.GetComponent<ItemBehaviour>() != null)
                 {
                     interactableObject.GetComponent<ItemBehaviour>().AddtoInventory(this);
+                }
+                else if (interactableObject.GetComponent<KeycardDoorBehaviour>() != null)
+                {
+                    interactableObject.GetComponent<KeycardDoorBehaviour>().UseKeycard(this);
                 }
             }
         }
@@ -134,6 +153,10 @@ public class PlayerBehaviour : MonoBehaviour
     {
         coinUIText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} / {1} Collected", coins, 13);
         StartCoroutine(CoinUIShow());
+    }
+    private void UpdateKeycardUI()
+    {
+        KeycardUI.SetActive(hasKeycard);
     }
     IEnumerator CoinUIShow()
     {
