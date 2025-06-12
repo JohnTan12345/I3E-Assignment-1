@@ -130,6 +130,10 @@ public class PlayerBehaviour : MonoBehaviour
                 {
                     interactableObject.GetComponent<KeycardDoorBehaviour>().UseKeycard(this);
                 }
+                else if (interactableObject.GetComponent<LeverBehaviour>() != null)
+                {
+                    interactableObject.GetComponent<LeverBehaviour>().ActivateLever();
+                }
             }
         }
     }
