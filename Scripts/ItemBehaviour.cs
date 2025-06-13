@@ -1,3 +1,9 @@
+/*
+* Author: Tan Hong Yan John
+* Date: 10 June 2025
+* Description: Add item to inventory
+*/
+
 using UnityEngine;
 
 public class ItemBehaviour : MonoBehaviour
@@ -5,6 +11,6 @@ public class ItemBehaviour : MonoBehaviour
     public void AddtoInventory(PlayerBehaviour player)
     {
         player.HasKeycard = true;
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

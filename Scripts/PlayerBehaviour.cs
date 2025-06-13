@@ -1,3 +1,9 @@
+/*
+* Author: Tan Hong Yan John
+* Date: 10 June 2025
+* Description: Player functions as well as most of the UI functions
+*/
+
 using System;
 using System.Collections;
 using System.Collections.Generic;

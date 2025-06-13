@@ -1,3 +1,9 @@
+/*
+* Author: Tan Hong Yan John
+* Date: 13 June 2025
+* Description: Keycard Door that opens after using a keycard
+*/
+
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;

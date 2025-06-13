@@ -1,3 +1,9 @@
+/*
+* Author: Tan Hong Yan John
+* Date: 13 June 2025
+* Description: Lever Function and Animation
+*/
+
 using System.Collections;
 using UnityEngine;
 
@@ -11,7 +17,6 @@ public class LeverBehaviour : MonoBehaviour
     public void ActivateLever()
     {
         leverHandle = this.gameObject.transform.Find("Lever Handle");
-        Destroy(affectedGameObject);
         StartCoroutine(LeverAnimations(leverHandle));
     }
 
@@ -23,6 +28,7 @@ public class LeverBehaviour : MonoBehaviour
             leverRotated += 30;
             yield return new WaitForSeconds(.1f);
         }
+        affectedGameObject.SetActive(false);
         yield return null;
     }
 }
