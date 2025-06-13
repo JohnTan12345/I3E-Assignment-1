@@ -17,7 +17,7 @@ public class PlayerBehaviour : MonoBehaviour
 {
     // UI
     [SerializeField]
-    GameObject GreenHPBar;
+    GameObject greenHPBar;
     [SerializeField]
     GameObject HPText;
     [SerializeField]
@@ -25,9 +25,12 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     GameObject coinUIText;
     [SerializeField]
-    GameObject InteractUI;
+    GameObject interactUI;
     [SerializeField]
-    GameObject KeycardUI;
+    GameObject keycardUI;
+    [SerializeField]
+    GameObject planksUI;
+
     // Variables
     private int maxhealth = 100;
     private int health = 100;
@@ -70,7 +73,20 @@ public class PlayerBehaviour : MonoBehaviour
         set
         {
             hasKeycard = value;
-            UpdateKeycardUI();
+            UpdateObjectUI(keycardUI, value);
+        }
+    }
+        private bool hasPlanks = false;
+    public bool HasPlanks
+    {
+        get
+        {
+            return hasPlanks;
+        }
+        set
+        {
+            hasPlanks = value;
+            UpdateObjectUI(planksUI, value);
         }
     }
     public bool isDead = false;
@@ -84,7 +100,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         UpdateHealthUI();
         coinUI.SetActive(false);
-        KeycardUI.SetActive(false);
+        keycardUI.SetActive(false);
     }
 
     void FixedUpdate()
@@ -95,13 +111,13 @@ public class PlayerBehaviour : MonoBehaviour
         {
             interactable = true;
             interactableObject = hit.collider.gameObject;
-            InteractUI.SetActive(true);
+            interactUI.SetActive(true);
         }
         else
         {
             interactable = false;
             interactableObject = null;
-            InteractUI.SetActive(false);
+            interactUI.SetActive(false);
         }
     }
 
@@ -140,6 +156,17 @@ public class PlayerBehaviour : MonoBehaviour
                 {
                     interactableObject.GetComponent<LeverBehaviour>().ActivateLever();
                 }
+                else if (interactableObject.GetComponentInParent<PlaceableObjectBehaviour>() != null)
+                {
+                    if (!hasPlanks)
+                    {
+                        interactableObject.GetComponentInParent<PlaceableObjectBehaviour>().PickUp(this);
+                    }
+                    else
+                    {
+                        interactableObject.GetComponentInParent<PlaceableObjectBehaviour>().Place(this);
+                    }
+                }
             }
         }
     }
@@ -156,7 +183,7 @@ public class PlayerBehaviour : MonoBehaviour
     // GUI Functions
     private void UpdateHealthUI()
     {
-        GreenHPBar.transform.localScale = new Vector3((float)health / maxhealth, 1f, 1f);
+        greenHPBar.transform.localScale = new Vector3((float)health / maxhealth, 1f, 1f);
         HPText.GetComponent<TextMeshProUGUI>().text = string.Format("{0}/{1}", health, maxhealth);
     }
     private void UpdateCoinUI()
@@ -164,9 +191,9 @@ public class PlayerBehaviour : MonoBehaviour
         coinUIText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} / {1} Collected", coins, 13);
         StartCoroutine(CoinUIShow());
     }
-    private void UpdateKeycardUI()
+    private void UpdateObjectUI(GameObject UI, bool Active)
     {
-        KeycardUI.SetActive(hasKeycard);
+        UI.SetActive(Active);
     }
     IEnumerator CoinUIShow()
     {
