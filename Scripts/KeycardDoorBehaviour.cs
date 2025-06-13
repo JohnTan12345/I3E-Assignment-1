@@ -28,6 +28,8 @@ public class KeycardDoorBehaviour : MonoBehaviour
 
             StartCoroutine(MoveDoor(doorLeft, doorRight));
             this.gameObject.tag = "Untagged";
+
+            this.gameObject.GetComponent<ScoreScript>().canAddScore = true;
         }
         else
         {

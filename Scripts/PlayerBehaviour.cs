@@ -11,25 +11,24 @@ using NUnit.Framework;
 using StarterAssets;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 public class PlayerBehaviour : MonoBehaviour
 {
     // UI
-    [SerializeField]
-    GameObject greenHPBar;
-    [SerializeField]
-    GameObject HPText;
-    [SerializeField]
-    GameObject coinUI;
-    [SerializeField]
-    GameObject coinUIText;
-    [SerializeField]
-    GameObject interactUI;
-    [SerializeField]
-    GameObject keycardUI;
-    [SerializeField]
-    GameObject planksUI;
+    public GameObject MainUI;
+    private GameObject greenHPBar;
+    private GameObject HPText;
+    private GameObject coinUI;
+    private GameObject coinUIText;
+    private GameObject interactUI;
+    private GameObject keycardUI;
+    private GameObject planksUI;
+    private GameObject tutorialUI;
+    private GameObject hintsUIGroup;
+    private GameObject scoreUI;
+    private Button tutorialButton;
 
     // Variables
     private int maxhealth = 100;
@@ -62,6 +61,19 @@ public class PlayerBehaviour : MonoBehaviour
             UpdateCoinUI();
         }
     }
+    private int score = 0;
+    public int Score
+    {
+        get
+        {
+            return score;
+        }
+        set
+        {
+            score = value;
+            UpdateScoreUI();
+        }
+    }
     public bool canTakeDamage = true;
     private bool hasKeycard = false;
     public bool HasKeycard
@@ -76,7 +88,7 @@ public class PlayerBehaviour : MonoBehaviour
             UpdateObjectUI(keycardUI, value);
         }
     }
-        private bool hasPlanks = false;
+    private bool hasPlanks = false;
     public bool HasPlanks
     {
         get
@@ -90,34 +102,68 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
     public bool isDead = false;
-
+    public bool doneTutorial = false;
     private bool interactable = false;
     private GameObject interactableObject;
     [SerializeField]
     private GameObject raycastSpawner;
 
-    void Start()
+    void Start() // Get all needed UI and update Health.
     {
+        greenHPBar = MainUI.transform.Find("HP Bar").Find("HP Red").Find("HP Green").gameObject;
+        HPText = MainUI.transform.Find("HP Bar").Find("HP Red").Find("HP Indicator").gameObject;
+        coinUI = MainUI.transform.Find("Coins").gameObject;
+        coinUIText = coinUI.transform.Find("Coin Object").Find("Coin Count").gameObject;
+        interactUI = MainUI.transform.Find("Interact Pop Up").gameObject;
+        keycardUI = MainUI.transform.Find("Keycard").gameObject;
+        planksUI = MainUI.transform.Find("Planks").gameObject;
+        tutorialUI = MainUI.transform.Find("Tutorial").gameObject;
+        hintsUIGroup = MainUI.transform.Find("Hints").gameObject;
+        scoreUI = MainUI.transform.Find("Score Text").gameObject;
+
+        if (doneTutorial)
+        {
+            Destroy(tutorialUI);
+            TutorialRead();
+        }
+        else
+        {
+            tutorialButton = tutorialUI.transform.Find("OK Btn").GetComponent<Button>();
+            tutorialButton.onClick.AddListener(TutorialRead);
+        }
+
         UpdateHealthUI();
-        coinUI.SetActive(false);
-        keycardUI.SetActive(false);
+        UpdateScoreUI();
     }
 
     void FixedUpdate()
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(raycastSpawner.transform.position, raycastSpawner.transform.forward, out hit, 1.5f) && hit.collider.CompareTag("Interactable"))
+        if (Physics.Raycast(raycastSpawner.transform.position, raycastSpawner.transform.forward, out hit, 3f))
         {
-            interactable = true;
-            interactableObject = hit.collider.gameObject;
-            interactUI.SetActive(true);
+            if (hit.collider.CompareTag("Interactable"))
+            {
+                interactable = true;
+                interactableObject = hit.collider.gameObject;
+                interactUI.SetActive(true);
+                RemoveHints();
+            }
+            else if (hit.collider.CompareTag("HintBox"))
+            {
+                hit.collider.GetComponent<HintBehaviour>().hint();
+                NoInteractables();
+            }
+            else
+            {
+                NoInteractables();
+                RemoveHints();
+            }
         }
         else
         {
-            interactable = false;
-            interactableObject = null;
-            interactUI.SetActive(false);
+            NoInteractables();
+            RemoveHints();
         }
     }
 
@@ -167,6 +213,11 @@ public class PlayerBehaviour : MonoBehaviour
                         interactableObject.GetComponentInParent<PlaceableObjectBehaviour>().Place(this);
                     }
                 }
+
+                if (interactableObject.GetComponent<ScoreScript>() != null)
+                {
+                    interactableObject.GetComponent<ScoreScript>().AddScore(this);
+                }
             }
         }
     }
@@ -188,17 +239,43 @@ public class PlayerBehaviour : MonoBehaviour
     }
     private void UpdateCoinUI()
     {
-        coinUIText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} / {1} Collected", coins, 13);
+        coinUIText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} / {1} Collected", coins, 5);
         StartCoroutine(CoinUIShow());
     }
     private void UpdateObjectUI(GameObject UI, bool Active)
     {
         UI.SetActive(Active);
     }
+    private void TutorialRead()
+    {
+        Destroy(tutorialUI);
+        gameObject.GetComponent<StarterAssetsInputs>().cursorLocked = true;
+        gameObject.GetComponent<StarterAssetsInputs>().cursorInputForLook = true;
+        gameObject.GetComponent<CharacterController>().enabled = true;
+    }
+    private void RemoveHints()
+    {
+        foreach (Transform child in hintsUIGroup.transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+    }
+    private void UpdateScoreUI()
+    {
+        scoreUI.GetComponent<TextMeshProUGUI>().text = string.Format("Score: {0}",score);
+    }
     IEnumerator CoinUIShow()
     {
         coinUI.SetActive(true);
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSecondsRealtime(2.5f);
         coinUI.SetActive(false);
+    }
+
+    // Other Functions
+    private void NoInteractables()
+    {
+        interactable = false;
+        interactableObject = null;
+        interactUI.SetActive(false);
     }
 }
