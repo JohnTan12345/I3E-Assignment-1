@@ -17,6 +17,7 @@ public class LeverBehaviour : MonoBehaviour
     public void ActivateLever()
     {
         leverHandle = this.gameObject.transform.Find("Lever Handle");
+        this.gameObject.tag = "Untagged";
         StartCoroutine(LeverAnimations(leverHandle));
     }
 
