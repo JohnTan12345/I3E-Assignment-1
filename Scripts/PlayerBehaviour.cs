@@ -28,8 +28,11 @@ public class PlayerBehaviour : MonoBehaviour
     private GameObject tutorialUI;
     private GameObject hintsUIGroup;
     private GameObject scoreUI;
-    private Button tutorialButton;
     private GameObject DeathMessageUI;
+    private GameObject WinUI;
+    private GameObject WinCoinUI;
+    private GameObject WinScoreUI;
+    private Button tutorialButton;
     private Button RespawnButton;
     private Button QuitButton;
 
@@ -143,6 +146,9 @@ public class PlayerBehaviour : MonoBehaviour
         DeathMessageUI = MainUI.transform.Find("Death Message").gameObject;
         RespawnButton = DeathMessageUI.transform.Find("Respawn Btn").GetComponent<Button>();
         QuitButton = DeathMessageUI.transform.Find("Give Up Btn").GetComponent<Button>();
+        WinUI = MainUI.transform.Find("Win UI").gameObject;
+        WinCoinUI = WinUI.transform.Find("Coins").gameObject;
+        WinScoreUI = WinUI.transform.Find("Score").gameObject;
         characterController = GetComponent<CharacterController>();
         starterAssetsInputs = GetComponent<StarterAssetsInputs>();
 
@@ -244,6 +250,13 @@ public class PlayerBehaviour : MonoBehaviour
             other.gameObject.GetComponent<ModifyHealthBehaviour>().ModifyHealth(this);
         }
     }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name == "WinArea")
+        {
+            PlayerWin();
+        }
+    }
 
     // GUI Functions
     private void UpdateHealthUI()
@@ -322,5 +335,15 @@ public class PlayerBehaviour : MonoBehaviour
         starterAssetsInputs.cursorLocked = false;
         starterAssetsInputs.cursorInputForLook = false;
         DeathMessageUI.SetActive(true);
+    }
+
+    private void PlayerWin()
+    {
+        WinCoinUI.GetComponent<TextMeshProUGUI>().text = string.Format("Coins Collected: {0}/{1}", coins, totalCollectibles);
+        WinScoreUI.GetComponent<TextMeshProUGUI>().text = string.Format("Score: {0}", score);
+        characterController.enabled = false;
+        starterAssetsInputs.cursorLocked = false;
+        starterAssetsInputs.cursorInputForLook = false;
+        WinUI.SetActive(true);
     }
 }
