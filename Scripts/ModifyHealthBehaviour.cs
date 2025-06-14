@@ -14,7 +14,7 @@ public class ModifyHealthBehaviour : MonoBehaviour
 
     public void ModifyHealth(PlayerBehaviour player)
     {
-        if (player.canTakeDamage && !player.isDead)
+        if (player.canTakeDamage && !player.IsDead)
         {
             if (damage)
             {
@@ -29,7 +29,7 @@ public class ModifyHealthBehaviour : MonoBehaviour
             if (player.Health <= 0)
             {
                 player.Health = 0;
-                player.isDead = true;
+                player.IsDead = true;
             }
         }
 

@@ -29,10 +29,14 @@ public class PlayerBehaviour : MonoBehaviour
     private GameObject hintsUIGroup;
     private GameObject scoreUI;
     private Button tutorialButton;
+    private GameObject DeathMessageUI;
+    private Button RespawnButton;
+    private Button QuitButton;
 
     // Variables
     private int maxhealth = 100;
     private int health = 100;
+    private int totalCollectibles = 5;
     public int Health // Update Health GUI the very moment it changes
     {
         get
@@ -101,15 +105,31 @@ public class PlayerBehaviour : MonoBehaviour
             UpdateObjectUI(planksUI, value);
         }
     }
-    public bool isDead = false;
+    private bool isDead = false;
+    public bool IsDead
+    {
+        get
+        {
+            return isDead;
+        }
+        set
+        {
+            isDead = value;
+            PlayerDied();
+        }
+    }
     public bool doneTutorial = false;
     private bool interactable = false;
-    private GameObject interactableObject;
-    [SerializeField]
-    private GameObject raycastSpawner;
 
-    void Start() // Get all needed UI and update Health.
+    private GameObject interactableObject;
+    private CharacterController characterController;
+    private StarterAssetsInputs starterAssetsInputs;
+    public Transform spawnPointPos;
+    public GameObject raycastSpawner;
+
+    void Start() // Get all needed UI and update Health and Score.
     {
+
         greenHPBar = MainUI.transform.Find("HP Bar").Find("HP Red").Find("HP Green").gameObject;
         HPText = MainUI.transform.Find("HP Bar").Find("HP Red").Find("HP Indicator").gameObject;
         coinUI = MainUI.transform.Find("Coins").gameObject;
@@ -120,6 +140,11 @@ public class PlayerBehaviour : MonoBehaviour
         tutorialUI = MainUI.transform.Find("Tutorial").gameObject;
         hintsUIGroup = MainUI.transform.Find("Hints").gameObject;
         scoreUI = MainUI.transform.Find("Score Text").gameObject;
+        DeathMessageUI = MainUI.transform.Find("Death Message").gameObject;
+        RespawnButton = DeathMessageUI.transform.Find("Respawn Btn").GetComponent<Button>();
+        QuitButton = DeathMessageUI.transform.Find("Give Up Btn").GetComponent<Button>();
+        characterController = GetComponent<CharacterController>();
+        starterAssetsInputs = GetComponent<StarterAssetsInputs>();
 
         if (doneTutorial)
         {
@@ -132,6 +157,8 @@ public class PlayerBehaviour : MonoBehaviour
             tutorialButton.onClick.AddListener(TutorialRead);
         }
 
+        RespawnButton.onClick.AddListener(Respawn);
+        QuitButton.onClick.AddListener(QuitGame);
         UpdateHealthUI();
         UpdateScoreUI();
     }
@@ -164,19 +191,6 @@ public class PlayerBehaviour : MonoBehaviour
         {
             NoInteractables();
             RemoveHints();
-        }
-    }
-
-    void Update()
-    {
-        CharacterController characterController = GetComponent<CharacterController>();
-
-        if (isDead)
-        {
-            characterController.enabled = false;
-            StarterAssetsInputs starterAssetsInputs = GetComponent<StarterAssetsInputs>();
-            starterAssetsInputs.cursorLocked = false;
-            starterAssetsInputs.cursorInputForLook = false;
         }
     }
 
@@ -239,7 +253,14 @@ public class PlayerBehaviour : MonoBehaviour
     }
     private void UpdateCoinUI()
     {
-        coinUIText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} / {1} Collected", coins, 5);
+        if (coins < totalCollectibles)
+        {
+            coinUIText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} / {1} Collected", coins, totalCollectibles);
+        }
+        else
+        {
+            coinUIText.GetComponent<TextMeshProUGUI>().text = "All Collected!";
+        }
         StartCoroutine(CoinUIShow());
     }
     private void UpdateObjectUI(GameObject UI, bool Active)
@@ -262,7 +283,7 @@ public class PlayerBehaviour : MonoBehaviour
     }
     private void UpdateScoreUI()
     {
-        scoreUI.GetComponent<TextMeshProUGUI>().text = string.Format("Score: {0}",score);
+        scoreUI.GetComponent<TextMeshProUGUI>().text = string.Format("Score: {0}", score);
     }
     IEnumerator CoinUIShow()
     {
@@ -277,5 +298,29 @@ public class PlayerBehaviour : MonoBehaviour
         interactable = false;
         interactableObject = null;
         interactUI.SetActive(false);
+    }
+
+    private void Respawn()
+    {
+        Health = 100;
+        this.gameObject.transform.position = spawnPointPos.position;
+        this.gameObject.transform.rotation = spawnPointPos.rotation;
+        characterController.enabled = true;
+        starterAssetsInputs.cursorLocked = true;
+        starterAssetsInputs.cursorInputForLook = true;
+        DeathMessageUI.SetActive(false);
+    }
+
+    private void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    private void PlayerDied()
+    {
+        characterController.enabled = false;
+        starterAssetsInputs.cursorLocked = false;
+        starterAssetsInputs.cursorInputForLook = false;
+        DeathMessageUI.SetActive(true);
     }
 }

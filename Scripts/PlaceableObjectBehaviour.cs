@@ -26,7 +26,10 @@ public class PlaceableObjectBehaviour : MonoBehaviour
         objectPlacement.GetComponent<MeshRenderer>().material = interactableObject.GetComponent<MeshRenderer>().material;
         objectPlacement.GetComponent<Collider>().isTrigger = false;
 
-        this.gameObject.tag = "Untagged";
+        foreach (Transform child in this.gameObject.transform)
+        {
+            child.gameObject.tag = "Untagged";
+        };
         player.HasPlanks = false;
     }
 }
