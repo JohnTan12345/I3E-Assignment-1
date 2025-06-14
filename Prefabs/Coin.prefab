@@ -1435,6 +1435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aae93706274a48e47832dbbe553c9282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collectSFX: {fileID: 8300000, guid: 0d6b531f2fb860c45afe44e3d356212e, type: 3}
 --- !u!114 &1163729005977752062
 MonoBehaviour:
   m_ObjectHideFlags: 0

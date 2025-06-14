@@ -8,9 +8,11 @@ using UnityEngine;
 
 public class ItemBehaviour : MonoBehaviour
 {
+    public AudioClip pickUpSFX;
     public void AddtoInventory(PlayerBehaviour player)
     {
         player.HasKeycard = true;
         gameObject.SetActive(false);
+        AudioSource.PlayClipAtPoint(pickUpSFX, transform.position);
     }
 }

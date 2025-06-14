@@ -12,6 +12,7 @@ public class LeverBehaviour : MonoBehaviour
     private int leverRotated = 0;
 
     public GameObject affectedGameObject;
+    public AudioClip affectedGameObjectInteractSFX;
     private Transform leverHandle;
 
     public void ActivateLever()
@@ -30,6 +31,7 @@ public class LeverBehaviour : MonoBehaviour
             yield return new WaitForSeconds(.1f);
         }
         affectedGameObject.SetActive(false);
+        AudioSource.PlayClipAtPoint(affectedGameObjectInteractSFX, affectedGameObject.transform.position);
         yield return null;
     }
 }

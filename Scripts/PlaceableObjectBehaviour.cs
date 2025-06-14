@@ -9,6 +9,8 @@ public class PlaceableObjectBehaviour : MonoBehaviour
 {
     private GameObject interactableObject;
     private GameObject objectPlacement;
+    public AudioClip pickUpSFX;
+    public AudioClip placeSFX;
     public void PickUp(PlayerBehaviour player)
     {
         interactableObject = this.gameObject.transform.Find(this.gameObject.name).gameObject;
@@ -17,6 +19,7 @@ public class PlaceableObjectBehaviour : MonoBehaviour
         interactableObject.SetActive(false);
         objectPlacement.SetActive(true);
         player.HasPlanks = true;
+        AudioSource.PlayClipAtPoint(pickUpSFX, interactableObject.transform.position);
     }
     public void Place(PlayerBehaviour player)
     {
@@ -31,5 +34,6 @@ public class PlaceableObjectBehaviour : MonoBehaviour
             child.gameObject.tag = "Untagged";
         };
         player.HasPlanks = false;
+        AudioSource.PlayClipAtPoint(placeSFX, objectPlacement.transform.position);
     }
 }

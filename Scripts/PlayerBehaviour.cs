@@ -129,6 +129,7 @@ public class PlayerBehaviour : MonoBehaviour
     private StarterAssetsInputs starterAssetsInputs;
     public Transform spawnPointPos;
     public GameObject raycastSpawner;
+    public AudioSource WinSFX;
 
     void Start() // Get all needed UI and update Health and Score.
     {
@@ -345,5 +346,6 @@ public class PlayerBehaviour : MonoBehaviour
         starterAssetsInputs.cursorLocked = false;
         starterAssetsInputs.cursorInputForLook = false;
         WinUI.SetActive(true);
+        WinSFX.Play();
     }
 }
