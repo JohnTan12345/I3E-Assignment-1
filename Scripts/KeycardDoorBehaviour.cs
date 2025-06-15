@@ -15,18 +15,22 @@ public class KeycardDoorBehaviour : MonoBehaviour
     private Transform doorLeft;
     private Transform doorRight;
     private float doorMoved = 0;
+    public AudioClip KeycardReaderBeep;
+    public AudioClip DoorSFX;
 
     public void UseKeycard(PlayerBehaviour player)
     {
         if (player.HasKeycard)
         {
             player.HasKeycard = false;
+            AudioSource.PlayClipAtPoint(KeycardReaderBeep, this.gameObject.transform.position);
 
             door = this.gameObject.transform.parent.Find("door");
             doorLeft = door.Find("doorLeft");
             doorRight = door.Find("doorRight");
 
             StartCoroutine(MoveDoor(doorLeft, doorRight));
+            AudioSource.PlayClipAtPoint(DoorSFX, door.transform.position);
             this.gameObject.tag = "Untagged";
 
             this.gameObject.GetComponent<ScoreScript>().canAddScore = true;
