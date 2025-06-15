@@ -1,7 +1,7 @@
 /*
 * Author: Tan Hong Yan John
 * Date: 10 June 2025
-* Description: Player functions as well as most of the UI functions
+* Description: Player functions as well as most of the UI functions and core gameplay functions
 */
 
 using System;
@@ -40,7 +40,7 @@ public class PlayerBehaviour : MonoBehaviour
     private int maxhealth = 100;
     private int health = 100;
     private int totalCollectibles = 5;
-    public int Health // Update Health GUI the very moment it changes
+    public int Health // Update Health GUI the moment it changes
     {
         get
         {
@@ -131,9 +131,9 @@ public class PlayerBehaviour : MonoBehaviour
     public GameObject raycastSpawner;
     public AudioSource WinSFX;
 
-    void Start() // Get all needed UI and update Health and Score.
+    void Start() // Get all needed UI, tutorial check, update Health and Score.
     {
-
+        // Get all needed components and put them into their respective variables
         greenHPBar = MainUI.transform.Find("HP Bar").Find("HP Red").Find("HP Green").gameObject;
         HPText = MainUI.transform.Find("HP Bar").Find("HP Red").Find("HP Indicator").gameObject;
         coinUI = MainUI.transform.Find("Coins").gameObject;
@@ -207,21 +207,21 @@ public class PlayerBehaviour : MonoBehaviour
         {
             if (interactableObject.CompareTag("Interactable"))
             {
-                if (interactableObject.GetComponent<CoinBehaviour>() != null)
+                if (interactableObject.GetComponent<CoinBehaviour>() != null) // Coin
                 {
                     interactableObject.GetComponent<CoinBehaviour>().AddCoin(this);
                 }
-                else if (interactableObject.GetComponent<ItemBehaviour>() != null)
+                else if (interactableObject.GetComponent<ItemBehaviour>() != null) // Items
                 {
                     interactableObject.GetComponent<ItemBehaviour>().AddtoInventory(this);
                 }
-                else if (interactableObject.GetComponent<KeycardDoorBehaviour>() != null)
+                else if (interactableObject.GetComponent<KeycardDoorBehaviour>() != null) // Use keycard on reader
                 {
                     interactableObject.GetComponent<KeycardDoorBehaviour>().UseKeycard(this);
                 }
                 else if (interactableObject.GetComponent<LeverBehaviour>() != null)
                 {
-                    interactableObject.GetComponent<LeverBehaviour>().ActivateLever();
+                    interactableObject.GetComponent<LeverBehaviour>().ActivateLever(); // Lever
                 }
                 else if (interactableObject.GetComponentInParent<PlaceableObjectBehaviour>() != null)
                 {
@@ -235,7 +235,7 @@ public class PlayerBehaviour : MonoBehaviour
                     }
                 }
 
-                if (interactableObject.GetComponent<ScoreScript>() != null)
+                if (interactableObject.GetComponent<ScoreScript>() != null) // Score
                 {
                     interactableObject.GetComponent<ScoreScript>().AddScore(this);
                 }
@@ -243,7 +243,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
-    void OnCollisionStay(Collision other)
+    void OnCollisionStay(Collision other) // Damage gameObjects
     {
         if (other.gameObject.CompareTag("HealthModifier"))
         {
@@ -251,7 +251,7 @@ public class PlayerBehaviour : MonoBehaviour
             other.gameObject.GetComponent<ModifyHealthBehaviour>().ModifyHealth(this);
         }
     }
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other) // Entering the win zone
     {
         if (other.gameObject.name == "WinArea")
         {

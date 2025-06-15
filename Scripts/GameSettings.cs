@@ -1,7 +1,7 @@
 /*
 * Author: Tan Hong Yan John
 * Date: 10 June 2025
-* Description: FPS Limiter so that my GPU doesn't have a meltdown
+* Description: Cap FPS at 60
 */
 
 using UnityEngine;

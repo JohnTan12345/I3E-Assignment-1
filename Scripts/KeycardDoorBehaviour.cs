@@ -18,7 +18,7 @@ public class KeycardDoorBehaviour : MonoBehaviour
     public AudioClip KeycardReaderBeep;
     public AudioClip DoorSFX;
 
-    public void UseKeycard(PlayerBehaviour player)
+    public void UseKeycard(PlayerBehaviour player) 
     {
         if (player.HasKeycard)
         {
@@ -48,7 +48,7 @@ public class KeycardDoorBehaviour : MonoBehaviour
         KeycardUI.SetActive(false);
     }
 
-    IEnumerator MoveDoor(Transform doorLeft, Transform doorRight) // Door Animations
+    IEnumerator MoveDoor(Transform doorLeft, Transform doorRight) // Door Sliding Animation
     {
         while (doorMoved < 1)
         {

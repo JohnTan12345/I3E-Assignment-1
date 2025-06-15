@@ -1,7 +1,7 @@
 /*
 * Author: Tan Hong Yan John
 * Date: 10 June 2025
-* Description: Coin Function
+* Description: Coin
 */
 
 using System.Collections;

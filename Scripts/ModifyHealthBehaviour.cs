@@ -34,7 +34,7 @@ public class ModifyHealthBehaviour : MonoBehaviour
         }
 
     }
-    IEnumerator CanTakeDamageTimer(PlayerBehaviour player)
+    IEnumerator CanTakeDamageTimer(PlayerBehaviour player) // Give the player time to react to the damage if not instant
     {
         yield return new WaitForSeconds(1f);
         player.canTakeDamage = true;

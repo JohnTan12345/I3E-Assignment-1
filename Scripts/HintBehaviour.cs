@@ -1,7 +1,7 @@
 /*
 * Author: Tan Hong Yan John
 * Date: 14 June 2025
-* Description: Hint
+* Description: Show Hint
 */
 
 using UnityEngine;

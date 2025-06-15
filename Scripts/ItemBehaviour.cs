@@ -1,7 +1,7 @@
 /*
 * Author: Tan Hong Yan John
 * Date: 10 June 2025
-* Description: Add item to inventory
+* Description: Add item (currently just keycard) to inventory
 */
 
 using UnityEngine;
