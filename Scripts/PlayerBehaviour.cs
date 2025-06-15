@@ -48,6 +48,10 @@ public class PlayerBehaviour : MonoBehaviour
         }
         set
         {
+            if (value < health)
+            {
+                BurnDamageSFX.Play();
+            }
             if (value != health)
             {
                 health = value;
@@ -130,6 +134,7 @@ public class PlayerBehaviour : MonoBehaviour
     public Transform spawnPointPos;
     public GameObject raycastSpawner;
     public AudioSource WinSFX;
+    public AudioSource BurnDamageSFX;
 
     void Start() // Get all needed UI, tutorial check, update Health and Score.
     {
