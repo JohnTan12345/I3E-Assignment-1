@@ -34,12 +34,12 @@
 - Some audio sfx are softer than usual
 
 ## Credits
-Short Beep Tone - https://pixabay.com/sound-effects/short-beep-tone-47916/
-tada - https://pixabay.com/sound-effects/tada-234709/
-Relaxed Gaming Vibes - https://pixabay.com/music/beats-relaxed-gaming-vibes-323631/
-door-open - https://pixabay.com/sound-effects/door-open-107728/
-collect - https://pixabay.com/sound-effects/collect-5930/
-Retro coin 4 - https://pixabay.com/sound-effects/retro-coin-4-236671/
-put_item - https://pixabay.com/sound-effects/put-item-83043/
+- Short Beep Tone - https://pixabay.com/sound-effects/short-beep-tone-47916/
+- tada - https://pixabay.com/sound-effects/tada-234709/
+- Relaxed Gaming Vibes - https://pixabay.com/music/beats-relaxed-gaming-vibes-323631/
+- door-open - https://pixabay.com/sound-effects/door-open-107728/
+- collect - https://pixabay.com/sound-effects/collect-5930/
+- Retro coin 4 - https://pixabay.com/sound-effects/retro-coin-4-236671/
+- put_item - https://pixabay.com/sound-effects/put-item-83043/
 
-All models are made by me through probuilder
+- All models are made by me through probuilder
